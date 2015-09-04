@@ -3,7 +3,7 @@ BIN_DIR ?= ${PREFIX}/bin
 
 SRC := frame frame.bash
 
-.PHONY: all install
+.PHONY: all install uninstall
 
 all:
 
