@@ -4,7 +4,25 @@ version() {
   echo "frame v0.1"
 }
 
+help() {
+  echo "Usage: frame <cmd>"
+  echo
+  echo "Maintain a stack of notes. We refer to notes as frames."
+  echo
+  echo " help"
+  echo " version"
+  echo " depth      print frames count"
+  echo " top        print last frame"
+  echo " pop        print last frame, then remove it"
+  echo " push [-e]  create a new frame"
+  echo "            with -e, use \$EDITOR to create the new frame"
+}
+
 verify_version() {
+  true
+}
+
+verify_help() {
   true
 }
 
@@ -102,6 +120,7 @@ verify() {
   elif [ $1 = push ]; then verify_push "$@"
   elif [ $1 = depth ]; then verify_depth "$@"
   elif [ $1 = version ]; then verify_version
+  elif [ $1 = help ]; then verify_help
   else invalid_command
   fi
 }
@@ -112,11 +131,12 @@ process() {
   elif [ $1 = push ]; then push "$@"
   elif [ $1 = depth ]; then depth
   elif [ $1 = version ]; then version
+  elif [ $1 = help ]; then help
   fi
 }
 
 frame() {
-  if [ $# -lt 1 ]; then echo "usage: frame <top|pop|push>"
+  if [ $# -lt 1 ]; then help
   else verify "$@" && process "$@"
   fi
 }
