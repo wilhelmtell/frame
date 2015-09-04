@@ -35,6 +35,10 @@ push() {
   fi
 }
 
+depth() {
+  wc -l "$DOT_FRAME" |cut -f1 -d' '
+}
+
 verify_top_dotframe_is_not_a_directory() {
   [ -d "$DOT_FRAME" ] && echo "error: $DOT_FRAME is a directory." >&2
   [ ! -d "$DOT_FRAME" ]
@@ -66,6 +70,11 @@ verify_push() {
   [ $# -eq 1 -o $# -eq 2 ]
 }
 
+verify_depth() {
+  [ $# -eq 1 ] || echo "usage: frame depth"
+  [ $# -eq 1 ]
+}
+
 invalid_command() {
   echo "error: invalid command." >&2
   false
@@ -75,6 +84,7 @@ verify() {
   if [ $1 = top ]; then verify_top
   elif [ $1 = pop ]; then verify_pop
   elif [ $1 = push ]; then verify_push "$@"
+  elif [ $1 = depth ]; then verify_depth "$@"
   else invalid_command
   fi
 }
@@ -83,6 +93,7 @@ process() {
   if [ $1 = top ]; then top
   elif [ $1 = pop ]; then pop
   elif [ $1 = push ]; then push "$@"
+  elif [ $1 = depth ]; then depth
   fi
 }
 
