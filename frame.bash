@@ -1,5 +1,3 @@
-#!/bin/bash
-
 DOT_FRAME="$HOME/.frame"
 
 rm_top() {
@@ -73,5 +71,3 @@ frame() {
   else verify "$@" && process "$@"
   fi
 }
-
-frame "$@"
