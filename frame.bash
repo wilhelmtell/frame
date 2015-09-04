@@ -93,9 +93,7 @@ rm_top() {
 }
 
 top() {
-  tail -n 1 "$DOT_FRAME" |
-    tr -d '\n' |
-    tr '\0' '\n'
+  show show -1
 }
 
 pop() {
