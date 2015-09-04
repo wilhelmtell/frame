@@ -51,7 +51,7 @@ push_stdin() {
 push_editor() {
   local temporary_file="$(mktemp)"
   $EDITOR "$temporary_file"
-  push_stdin <"$temporary_file"
+  [ $? -eq 0 ] && push_stdin <"$temporary_file"
   rm "$temporary_file"
 }
 
