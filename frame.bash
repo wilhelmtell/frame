@@ -13,7 +13,7 @@ help() {
   echo " version"
   echo " depth      print frames count"
   echo " top        print last frame"
-  echo " pop        print last frame, then remove it"
+  echo " pop        remove top frame, then print the (next) top frame"
   echo " push [-e]  create a new frame"
   echo "            with -e, use \$EDITOR to create the new frame"
 }
@@ -39,8 +39,8 @@ top() {
 }
 
 pop() {
-  top
   rm_top
+  top
 }
 
 push_stdin() {
