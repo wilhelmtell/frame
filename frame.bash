@@ -20,6 +20,7 @@ help() {
   echo " push [-e]  create a new frame"
   echo "            with -e, use \$EDITOR to create the new frame"
   echo " trace      list all frames' subject lines"
+  echo " show       print the nth frame. n grows from earliest to latest."
 }
 
 verify_version() {
@@ -36,6 +37,53 @@ verify_trace() {
 
 trace() {
   sed 's/\x0.*//' "$DOT_FRAME" |nl
+}
+
+verify_show_argument_count() {
+  [ $# -eq 2 ] || echo "usage: frame show <[-]n>" >&2
+  [ $# -eq 2 ]
+}
+
+verify_show_argument_is_numeric() {
+  echo "$2" |egrep -q '^(0|-?[1-9][0-9]*)$'
+  local error=$?
+  [ $error -eq 0 ] || echo "error: show argument not numeric." >&2
+  [ $error -eq 0 ]
+}
+
+verify_show_argument_is_within_bounds() {
+  local n=$(echo "$2" |tr -d -)
+  local line_count=$(wc -l "$DOT_FRAME" |cut -f1 -d' ')
+  [ $n -le $line_count ] || echo "error: show argument out of bounds." >&2
+  [ $n -le $line_count ]
+}
+
+verify_show_argument() {
+  verify_show_argument_is_numeric "$@" &&
+    verify_show_argument_is_within_bounds "$@"
+}
+
+verify_show() {
+  verify_show_argument_count "$@" &&
+    verify_show_argument "$@"
+}
+
+show_from_top() {
+  head -n "$2" "$DOT_FRAME" |tail -n 1 |tr -d '\n' |tr '\0' '\n'
+}
+
+show_from_bottom() {
+  local n=$(echo "$2" |tr -d -)
+  tail -n $n "$DOT_FRAME" |head -n 1 |tr -d '\n' |tr '\0' '\n'
+}
+
+show() {
+  if echo "$2" |egrep -q '^-';
+  then
+    show_from_bottom "$@"
+  else
+    show_from_top "$@"
+  fi
 }
 
 rm_top() {
@@ -145,6 +193,7 @@ verify() {
   elif [ $1 = version ]; then verify_version
   elif [ $1 = help ]; then verify_help
   elif [ $1 = trace ]; then verify_trace
+  elif [ $1 = show ]; then verify_show "$@"
   else invalid_command
   fi
 }
@@ -157,6 +206,7 @@ process() {
   elif [ $1 = version ]; then version
   elif [ $1 = help ]; then help
   elif [ $1 = trace ]; then trace
+  elif [ $1 = show ]; then show "$@"
   fi
 }
 
