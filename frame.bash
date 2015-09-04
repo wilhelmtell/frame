@@ -1,7 +1,7 @@
 DOT_FRAME="$HOME/.frame"
 
 version() {
-  echo "frame v0.1"
+  echo "frame v0.2"
 }
 
 help() {
