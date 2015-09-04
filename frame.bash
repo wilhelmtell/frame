@@ -1,5 +1,13 @@
 DOT_FRAME="$HOME/.frame"
 
+version() {
+  echo "frame v0.1"
+}
+
+verify_version() {
+  true
+}
+
 rm_top() {
   TMP="$(mktemp)"
   head -n -1 "$DOT_FRAME" >"$TMP"
@@ -93,6 +101,7 @@ verify() {
   elif [ $1 = pop ]; then verify_pop
   elif [ $1 = push ]; then verify_push "$@"
   elif [ $1 = depth ]; then verify_depth "$@"
+  elif [ $1 = version ]; then verify_version
   else invalid_command
   fi
 }
@@ -102,6 +111,7 @@ process() {
   elif [ $1 = pop ]; then pop
   elif [ $1 = push ]; then push "$@"
   elif [ $1 = depth ]; then depth
+  elif [ $1 = version ]; then version
   fi
 }
 
