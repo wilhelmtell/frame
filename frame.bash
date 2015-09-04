@@ -66,10 +66,16 @@ verify_push() {
   [ $# -eq 1 -o $# -eq 2 ]
 }
 
+invalid_command() {
+  echo "error: invalid command." >&2
+  false
+}
+
 verify() {
   if [ $1 = top ]; then verify_top
   elif [ $1 = pop ]; then verify_pop
   elif [ $1 = push ]; then verify_push "$@"
+  else invalid_command
   fi
 }
 
