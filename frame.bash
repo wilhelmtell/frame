@@ -49,6 +49,11 @@ verify_top_dotframe_exists() {
   [ -e "$DOT_FRAME" ]
 }
 
+verify_top_valid_dotframe() {
+  verify_top_dotframe_is_not_a_directory &&
+    verify_top_dotframe_exists
+}
+
 verify_top_dotframe_is_not_empty() {
   local line_count="$(wc -l "$DOT_FRAME" |cut -f1 -d' ')"
   [ $line_count -lt 1 ] && echo "error: $DOT_FRAME is empty." >&2
@@ -56,8 +61,7 @@ verify_top_dotframe_is_not_empty() {
 }
 
 verify_top() {
-  verify_top_dotframe_is_not_a_directory &&
-    verify_top_dotframe_exists &&
+  verify_top_valid_dotframe &&
     verify_top_dotframe_is_not_empty
 }
 
@@ -70,9 +74,13 @@ verify_push() {
   [ $# -eq 1 -o $# -eq 2 ]
 }
 
-verify_depth() {
-  [ $# -eq 1 ] || echo "usage: frame depth"
+verify_depth_commandline() {
+  [ $# -ne 1 ] && echo "usage: frame depth"
   [ $# -eq 1 ]
+}
+
+verify_depth() {
+  verify_top_valid_dotframe && verify_depth_commandline "$@"
 }
 
 invalid_command() {
