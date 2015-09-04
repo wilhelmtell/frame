@@ -7,7 +7,10 @@ version() {
 help() {
   echo "Usage: frame <cmd>"
   echo
-  echo "Maintain a stack of notes. We refer to notes as frames."
+  echo "Maintain a stack of notes."
+  echo
+  echo " * We refer to notes as frames."
+  echo " * A frame's subject line is its first line."
   echo
   echo " help"
   echo " version"
@@ -16,6 +19,7 @@ help() {
   echo " pop        remove top frame, then print the (next) top frame"
   echo " push [-e]  create a new frame"
   echo "            with -e, use \$EDITOR to create the new frame"
+  echo " trace      list all frames' subject lines"
 }
 
 verify_version() {
@@ -24,6 +28,14 @@ verify_version() {
 
 verify_help() {
   true
+}
+
+verify_trace() {
+  true
+}
+
+trace() {
+  sed 's/\x0.*//' "$DOT_FRAME" |nl
 }
 
 rm_top() {
@@ -132,6 +144,7 @@ verify() {
   elif [ $1 = depth ]; then verify_depth "$@"
   elif [ $1 = version ]; then verify_version
   elif [ $1 = help ]; then verify_help
+  elif [ $1 = trace ]; then verify_trace
   else invalid_command
   fi
 }
@@ -143,6 +156,7 @@ process() {
   elif [ $1 = depth ]; then depth
   elif [ $1 = version ]; then version
   elif [ $1 = help ]; then help
+  elif [ $1 = trace ]; then trace
   fi
 }
 
