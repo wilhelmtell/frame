@@ -91,8 +91,7 @@ verify_top_dotframe_is_not_empty() {
 }
 
 verify_top() {
-  verify_top_valid_dotframe &&
-    verify_top_dotframe_is_not_empty
+  verify_top_valid_dotframe
 }
 
 verify_pop() {
