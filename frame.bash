@@ -45,7 +45,7 @@ verify_show_argument_count() {
 }
 
 verify_show_argument_is_numeric() {
-  echo "$2" |egrep -q '^(0|-?[1-9][0-9]*)$'
+  echo "$2" |egrep -q '^-?[1-9][0-9]*$'
   local error=$?
   [ $error -eq 0 ] || echo "error: show argument not numeric." >&2
   [ $error -eq 0 ]
