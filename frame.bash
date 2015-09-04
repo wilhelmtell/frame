@@ -17,9 +17,22 @@ pop() {
   rm_top
 }
 
-push() {
+push_stdin() {
   tr '\n' '\0' </dev/stdin >>"$DOT_FRAME"
   echo >>"$DOT_FRAME"
+}
+
+push_editor() {
+  local temporary_file="$(mktemp)"
+  $EDITOR "$temporary_file"
+  push_stdin <"$temporary_file"
+  rm "$temporary_file"
+}
+
+push() {
+  if [ $# -eq 1 ]; then push_stdin
+  elif [ "$2" = "-e" ]; then push_editor
+  fi
 }
 
 verify_top_dotframe_is_not_a_directory() {
@@ -49,20 +62,21 @@ verify_pop() {
 }
 
 verify_push() {
-  true
+  [ $# -gt 2 ] && echo "usage: frame push [-e]"
+  [ $# -eq 1 -o $# -eq 2 ]
 }
 
 verify() {
   if [ $1 = top ]; then verify_top
   elif [ $1 = pop ]; then verify_pop
-  elif [ $1 = push ]; then verify_push
+  elif [ $1 = push ]; then verify_push "$@"
   fi
 }
 
 process() {
   if [ $1 = top ]; then top
   elif [ $1 = pop ]; then pop
-  elif [ $1 = push ]; then push
+  elif [ $1 = push ]; then push "$@"
   fi
 }
 
