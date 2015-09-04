@@ -44,8 +44,16 @@ pop() {
 }
 
 push_stdin() {
-  tr '\n' '\0' </dev/stdin >>"$DOT_FRAME"
-  echo >>"$DOT_FRAME"
+  local temporary_file="$(mktemp)"
+  tr '\n' '\0' </dev/stdin >>"$temporary_file"
+  echo >>"$temporary_file"
+  if [ $(tr -d '[:space:]\0' <"$temporary_file" |wc -c) -gt 0 ];
+  then
+    cat "$temporary_file" >>"$DOT_FRAME"
+  else
+    echo "error: empty text, push cancelled." >&2
+  fi
+  rm "$temporary_file"
 }
 
 push_editor() {
