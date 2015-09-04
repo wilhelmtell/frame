@@ -71,8 +71,12 @@ verify_top_dotframe_is_not_a_directory() {
 }
 
 verify_top_dotframe_exists() {
-  [ ! -e "$DOT_FRAME" ] && echo "error: $DOT_FRAME does not exist." >&2
-  [ -e "$DOT_FRAME" ]
+  [ ! -e "$DOT_FRAME" ] && touch "$DOT_FRAME"
+  if [ ! -e "$DOT_FRAME" ];
+  then
+    echo "error: failed to create $DOT_FRAME." >&2
+    false
+  fi
 }
 
 verify_top_valid_dotframe() {
