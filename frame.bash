@@ -1,7 +1,8 @@
 DOT_FRAME="$HOME/.frame"
+VERSION="$(git describe --dirty)"
 
 version() {
-  echo "frame v0.3"
+  echo "frame $VERSION"
 }
 
 help() {
