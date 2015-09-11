@@ -90,7 +90,8 @@ show() {
 
 rm_top() {
   TMP="$(mktemp $TEMPFILE_TEMPLATE)"
-  head -n -1 "$DOT_FRAME" >"$TMP"
+  local count=$(depth)
+  [[ $count > 1 ]] && head -n $((count - 1)) "$DOT_FRAME" >"$TMP"
   mv "$TMP" "$DOT_FRAME"
 }
 
