@@ -130,7 +130,7 @@ push() {
 }
 
 depth() {
-  wc -l "$DOT_FRAME" |cut -f1 -d' '
+  wc -l "$DOT_FRAME" |perl -pe 's/^\s*([0-9]+).*/$1/'
 }
 
 verify_top_dotframe_is_not_a_directory() {
