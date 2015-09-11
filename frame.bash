@@ -1,5 +1,6 @@
 DOT_FRAME="$HOME/.frame"
 VERSION="$(git describe --dirty)"
+TEMPFILE_TEMPLATE=frame.XXXXXXXX
 
 version() {
   echo "frame $VERSION"
@@ -88,7 +89,7 @@ show() {
 }
 
 rm_top() {
-  TMP="$(mktemp)"
+  TMP="$(mktemp $TEMPFILE_TEMPLATE)"
   head -n -1 "$DOT_FRAME" >"$TMP"
   mv "$TMP" "$DOT_FRAME"
 }
@@ -103,7 +104,7 @@ pop() {
 }
 
 push_stdin() {
-  local temporary_file="$(mktemp)"
+  local temporary_file="$(mktemp $TEMPFILE_TEMPLATE)"
   tr '\n' '\0' </dev/stdin >>"$temporary_file"
   echo >>"$temporary_file"
   if [ $(tr -d '[:space:]\0' <"$temporary_file" |wc -c) -gt 0 ];
@@ -116,7 +117,7 @@ push_stdin() {
 }
 
 push_editor() {
-  local temporary_file="$(mktemp)"
+  local temporary_file="$(mktemp $TEMPFILE_TEMPLATE)"
   $EDITOR "$temporary_file"
   [ $? -eq 0 ] && push_stdin <"$temporary_file"
   rm "$temporary_file"
