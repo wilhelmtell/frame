@@ -38,7 +38,7 @@ verify_trace() {
 }
 
 trace() {
-  sed 's/\x0.*//' "$DOT_FRAME" |nl
+  perl -pe 's/\000.*//' "$DOT_FRAME" |nl
 }
 
 verify_show_argument_count() {
