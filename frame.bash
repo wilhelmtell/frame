@@ -55,7 +55,7 @@ verify_show_argument_is_numeric() {
 
 verify_show_argument_is_within_bounds() {
   local n=$(echo "$2" |tr -d -)
-  local line_count=$(wc -l "$DOT_FRAME" |cut -f1 -d' ')
+  local line_count=$(depth)
   [ $n -le $line_count ] || echo "error: show argument out of bounds." >&2
   [ $n -le $line_count ]
 }
