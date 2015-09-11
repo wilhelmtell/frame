@@ -154,7 +154,7 @@ verify_top_valid_dotframe() {
 }
 
 verify_top_dotframe_is_not_empty() {
-  local line_count="$(wc -l "$DOT_FRAME" |cut -f1 -d' ')"
+  local line_count=$(depth)
   [ $line_count -lt 1 ] && echo "error: $DOT_FRAME is empty." >&2
   [ $line_count -gt 0 ]
 }
