@@ -1,4 +1,4 @@
-PREFIX ?= ${HOME}/usr/local
+PREFIX ?= ${HOME}/usr/local/stow/$(notdir ${CURDIR})
 BIN_DIR ?= ${PREFIX}/bin
 
 SRC := frame frame.bash

@@ -1,5 +1,6 @@
 DOT_FRAME="$HOME/.frame"
 VERSION="$(git describe --dirty)"
+TEMPFILE_TEMPLATE=frame.XXXXXXXX
 
 version() {
   echo "frame $VERSION"
@@ -37,7 +38,7 @@ verify_trace() {
 }
 
 trace() {
-  sed 's/\x0.*//' "$DOT_FRAME" |nl
+  perl -pe 's/\000.*//' "$DOT_FRAME" |nl
 }
 
 verify_show_argument_count() {
@@ -54,7 +55,7 @@ verify_show_argument_is_numeric() {
 
 verify_show_argument_is_within_bounds() {
   local n=$(echo "$2" |tr -d -)
-  local line_count=$(wc -l "$DOT_FRAME" |cut -f1 -d' ')
+  local line_count=$(depth)
   [ $n -le $line_count ] || echo "error: show argument out of bounds." >&2
   [ $n -le $line_count ]
 }
@@ -88,8 +89,9 @@ show() {
 }
 
 rm_top() {
-  TMP="$(mktemp)"
-  head -n -1 "$DOT_FRAME" >"$TMP"
+  TMP="$(mktemp $TEMPFILE_TEMPLATE)"
+  local count=$(depth)
+  [[ $count > 1 ]] && head -n $((count - 1)) "$DOT_FRAME" >"$TMP"
   mv "$TMP" "$DOT_FRAME"
 }
 
@@ -103,7 +105,7 @@ pop() {
 }
 
 push_stdin() {
-  local temporary_file="$(mktemp)"
+  local temporary_file="$(mktemp $TEMPFILE_TEMPLATE)"
   tr '\n' '\0' </dev/stdin >>"$temporary_file"
   echo >>"$temporary_file"
   if [ $(tr -d '[:space:]\0' <"$temporary_file" |wc -c) -gt 0 ];
@@ -116,7 +118,7 @@ push_stdin() {
 }
 
 push_editor() {
-  local temporary_file="$(mktemp)"
+  local temporary_file="$(mktemp $TEMPFILE_TEMPLATE)"
   $EDITOR "$temporary_file"
   [ $? -eq 0 ] && push_stdin <"$temporary_file"
   rm "$temporary_file"
@@ -129,7 +131,7 @@ push() {
 }
 
 depth() {
-  wc -l "$DOT_FRAME" |cut -f1 -d' '
+  wc -l "$DOT_FRAME" |awk '{ print $1; }'
 }
 
 verify_top_dotframe_is_not_a_directory() {
@@ -152,7 +154,7 @@ verify_top_valid_dotframe() {
 }
 
 verify_top_dotframe_is_not_empty() {
-  local line_count="$(wc -l "$DOT_FRAME" |cut -f1 -d' ')"
+  local line_count=$(depth)
   [ $line_count -lt 1 ] && echo "error: $DOT_FRAME is empty." >&2
   [ $line_count -gt 0 ]
 }
