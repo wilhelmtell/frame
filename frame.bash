@@ -11,8 +11,10 @@ help() {
   echo
   echo "Maintain a stack of notes."
   echo
-  echo " * We refer to notes as frames."
-  echo " * A frame's subject line is its first line."
+  echo "We refer to notes as frames. A frame's subject line is its first"
+  echo "line."
+  echo
+  echo "Valid commands:"
   echo
   echo " help"
   echo " version"
