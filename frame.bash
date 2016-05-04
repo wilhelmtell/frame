@@ -48,6 +48,13 @@ verify_show_argument_count() {
   [ $# -eq 2 ]
 }
 
+verify_show_argument_is_not_zero() {
+  echo "$2" |egrep -v -q '^0+$'
+  local error=$?
+  [ $error -eq 0 ] || echo "error: show argument is zero." >&2
+  [ $error -eq 0 ]
+}
+
 verify_show_argument_is_numeric() {
   echo "$2" |egrep -q '^-?[1-9][0-9]*$'
   local error=$?
@@ -63,6 +70,7 @@ verify_show_argument_is_within_bounds() {
 }
 
 verify_show_argument() {
+  verify_show_argument_is_not_zero "$@" &&
   verify_show_argument_is_numeric "$@" &&
     verify_show_argument_is_within_bounds "$@"
 }
