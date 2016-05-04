@@ -179,7 +179,8 @@ verify_pop() {
 
 verify_push() {
   [ $# -gt 2 ] && echo "usage: frame push [-e]"
-  [ $# -eq 1 -o $# -eq 2 ]
+  [ $# -eq 2 -a "$2" != "-e" ] && echo "usage: frame push [-e]"
+  [ $# -le 2 ] && [ $# -ne 2 -o "$2" = "-e" ]
 }
 
 verify_depth_commandline() {
