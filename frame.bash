@@ -18,12 +18,12 @@ help() {
   echo
   echo " help"
   echo " version"
-  echo " depth      print frames count"
-  echo " top        print last frame"
-  echo " pop        remove top frame, then print the (next) top frame"
-  echo " push [-e]  create a new frame"
-  echo "            with -e, use \$EDITOR to create the new frame"
-  echo " trace      list all frames' subject lines"
+  echo " depth      print frames count."
+  echo " top        print last frame."
+  echo " pop        remove top frame, then print the (next) top frame."
+  echo " push [-e]  create a new frame."
+  echo "            with -e, use \$EDITOR to create the new frame."
+  echo " trace      list all frames' subject lines."
   echo " show       print the nth frame. n grows from earliest to latest."
 }
 
