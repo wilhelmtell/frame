@@ -227,3 +227,5 @@ frame() {
   else verify "$@" && process "$@"
   fi
 }
+
+frame "$@"
