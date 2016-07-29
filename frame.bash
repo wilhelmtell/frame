@@ -9,7 +9,7 @@ version() {
 help() {
   echo "Usage: frame <cmd>"
   echo
-  echo "Maintain a stack of notes."
+  echo "Manipulate a stack of notes."
   echo
   echo "We refer to notes as frames. A frame's subject line is its first"
   echo "line."
