@@ -208,35 +208,18 @@ invalid_command() {
 }
 
 verify() {
-  if [ $1 = top ]; then verify_top
-  elif [ $1 = pop ]; then verify_pop
-  elif [ $1 = push ]; then verify_push "$@"
-  elif [ $1 = depth ]; then verify_depth "$@"
-  elif [ $1 = version ]; then verify_version
-  elif [ $1 = help ]; then verify_help
-  elif [ $1 = trace ]; then verify_trace
-  elif [ $1 = list ]; then verify_list
-  elif [ $1 = show ]; then verify_show "$@"
-  else invalid_command
-  fi
-}
-
-process() {
-  if [ $1 = top ]; then top
-  elif [ $1 = pop ]; then pop
-  elif [ $1 = push ]; then push "$@"
-  elif [ $1 = depth ]; then depth
-  elif [ $1 = version ]; then version
-  elif [ $1 = help ]; then help
-  elif [ $1 = trace ]; then trace
-  elif [ $1 = list ]; then list
-  elif [ $1 = show ]; then show "$@"
+  local cmds="top|pop|push|depth|version|help|trace|list|show"
+  if egrep --quiet "^(${cmds})$" <<<"$1"
+  then
+    verify_${1}
+  else
+    invalid_command
   fi
 }
 
 frame() {
   if [ $# -lt 1 ]; then help
-  else verify "$@" && process "$@"
+  else verify "$@" && ${1} "$@"
   fi
 }
 
