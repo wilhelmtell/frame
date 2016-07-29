@@ -25,6 +25,7 @@ help() {
   echo " push [-e]  create a new frame."
   echo "            with -e, use \$EDITOR to create the new frame."
   echo " trace      list all frames' subject lines."
+  echo " list       alias for trace."
   echo " show       print the nth frame. n grows from earliest to latest."
 }
 
@@ -40,8 +41,16 @@ verify_trace() {
   true
 }
 
+verify_list() {
+  verify_trace "$@"
+}
+
 trace() {
   perl -pe 's/\000.*//' "$DOT_FRAME" |nl
+}
+
+list() {
+  trace "$@"
 }
 
 verify_show_argument_count() {
@@ -206,6 +215,7 @@ verify() {
   elif [ $1 = version ]; then verify_version
   elif [ $1 = help ]; then verify_help
   elif [ $1 = trace ]; then verify_trace
+  elif [ $1 = list ]; then verify_list
   elif [ $1 = show ]; then verify_show "$@"
   else invalid_command
   fi
@@ -219,6 +229,7 @@ process() {
   elif [ $1 = version ]; then version
   elif [ $1 = help ]; then help
   elif [ $1 = trace ]; then trace
+  elif [ $1 = list ]; then list
   elif [ $1 = show ]; then show "$@"
   fi
 }
