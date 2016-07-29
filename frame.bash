@@ -8,7 +8,7 @@ version() {
 }
 
 help() {
-  echo "Usage: frame <cmd>"
+  echo "Usage: ${SCRIPT_BASENAME} <cmd>"
   echo
   echo "Manipulate a stack of notes."
   echo
