@@ -1,6 +1,7 @@
 DOT_FRAME="$HOME/.frame"
 VERSION="$(git describe --dirty)"
 TEMPFILE_TEMPLATE=frame.XXXXXXXX
+SCRIPT_BASENAME="$(basename "$0")"
 
 version() {
   echo "frame $VERSION"
@@ -193,7 +194,7 @@ verify_depth() {
 }
 
 invalid_command() {
-  echo "error: invalid command." >&2
+  echo "error: invalid command. try \`${SCRIPT_BASENAME} help'." >&2
   false
 }
 
