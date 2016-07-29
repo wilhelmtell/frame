@@ -1,5 +1,5 @@
-prefix ?= ${HOME}/usr/local/stow/$(notdir ${CURDIR})
-bin_dir ?= ${prefix}/bin
+prefix := ${HOME}/usr/local/stow/$(notdir ${CURDIR})
+bin_dir := ${prefix}/bin
 
 .PHONY: all install uninstall
 
