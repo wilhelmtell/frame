@@ -1,5 +1,15 @@
 #!/bin/bash
 
+dot_frame_path() {
+  local dot_frame="${1:-$HOME/.frame}"
+  if [ -d $dot_frame ]
+  then
+    echo $dot_frame/.frame
+  else
+    echo $dot_frame
+  fi
+}
+
 version() {
   echo "frame $VERSION"
 }
@@ -220,7 +230,7 @@ frame() {
   fi
 }
 
-DOT_FRAME="$HOME/.frame"
+DOT_FRAME="$(dot_frame_path ${DOT_FRAME})"
 VERSION="$(git describe --dirty)"
 TEMPFILE_TEMPLATE=frame.XXXXXXXX
 SCRIPT_BASENAME="$(basename "$0")"
