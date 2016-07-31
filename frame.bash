@@ -1,3 +1,5 @@
+#!/bin/bash
+
 DOT_FRAME="$HOME/.frame"
 VERSION="$(git describe --dirty)"
 TEMPFILE_TEMPLATE=frame.XXXXXXXX
