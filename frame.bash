@@ -230,7 +230,7 @@ frame() {
   fi
 }
 
-DOT_FRAME="$(dot_frame_path ${DOT_FRAME})"
+DOT_FRAME="$(dot_frame_path "${DOT_FRAME}")"
 VERSION="$(git describe --dirty)"
 TEMPFILE_TEMPLATE=frame.XXXXXXXX
 SCRIPT_BASENAME="$(basename "$0")"
