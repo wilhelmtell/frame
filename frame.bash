@@ -1,10 +1,5 @@
 #!/bin/bash
 
-DOT_FRAME="$HOME/.frame"
-VERSION="$(git describe --dirty)"
-TEMPFILE_TEMPLATE=frame.XXXXXXXX
-SCRIPT_BASENAME="$(basename "$0")"
-
 version() {
   echo "frame $VERSION"
 }
@@ -224,5 +219,10 @@ frame() {
   else verify "$@" && ${1} "$@"
   fi
 }
+
+DOT_FRAME="$HOME/.frame"
+VERSION="$(git describe --dirty)"
+TEMPFILE_TEMPLATE=frame.XXXXXXXX
+SCRIPT_BASENAME="$(basename "$0")"
 
 frame "$@"
