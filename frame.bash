@@ -70,13 +70,13 @@ verify_show_argument_count() {
 }
 
 verify_show_argument_is_not_zero() {
-  echo "$2" |egrep -v -q '^0+$'
+  egrep -v -q '^0+$' <<<"$2"
   local error_code=$?
   [ $error_code -eq 0 ] || error 1 "show argument is zero."
 }
 
 verify_show_argument_is_numeric() {
-  echo "$2" |egrep -q '^-?[1-9][0-9]*$'
+  egrep -q '^-?[1-9][0-9]*$' <<<"$2"
   local error_code=$?
   [ $error_code -eq 0 ] || error 1 "show argument not numeric."
 }
@@ -108,7 +108,7 @@ show_from_bottom() {
 }
 
 show() {
-  if echo "$2" |egrep -q '^-';
+  if egrep -q '^-' <<<"$2"
   then
     show_from_bottom "$@"
   else
