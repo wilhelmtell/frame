@@ -67,28 +67,24 @@ list() {
 
 verify_show_argument_count() {
   [ $# -eq 2 ] || error 1 "usage: frame show <[-]n>"
-  [ $# -eq 2 ]
 }
 
 verify_show_argument_is_not_zero() {
   echo "$2" |egrep -v -q '^0+$'
   local error_code=$?
   [ $error_code -eq 0 ] || error 1 "show argument is zero."
-  [ $error_code -eq 0 ]
 }
 
 verify_show_argument_is_numeric() {
   echo "$2" |egrep -q '^-?[1-9][0-9]*$'
   local error_code=$?
   [ $error_code -eq 0 ] || error 1 "show argument not numeric."
-  [ $error_code -eq 0 ]
 }
 
 verify_show_argument_is_within_bounds() {
   local n=$(echo "$2" |tr -d -)
   local line_count=$(depth)
   [ $n -le $line_count ] || error 1 "show argument out of bounds."
-  [ $n -le $line_count ]
 }
 
 verify_show_argument() {
