@@ -133,8 +133,7 @@ pop() {
 
 push_stdin() {
   local temporary_file="$(mktemp $TEMPFILE_TEMPLATE)"
-  tr '\n' '\0' </dev/stdin >>"$temporary_file"
-  echo >>"$temporary_file"
+  cat <(tr '\n' '\0') <(echo) >>"$temporary_file"
   if [ $(tr -d '[:space:]\0' <"$temporary_file" |wc -c) -gt 0 ];
   then
     cat "$temporary_file" >>"$DOT_FRAME"
