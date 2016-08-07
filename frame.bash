@@ -1,5 +1,10 @@
 #!/bin/bash
 
+error() {
+  echo "error: ${2}" >&2
+  return "$1"
+}
+
 dot_frame_path() {
   local dot_frame="${1:-$HOME/.frame}"
   if [ -d $dot_frame ]
@@ -61,28 +66,28 @@ list() {
 }
 
 verify_show_argument_count() {
-  [ $# -eq 2 ] || echo "usage: frame show <[-]n>" >&2
+  [ $# -eq 2 ] || error 1 "usage: frame show <[-]n>"
   [ $# -eq 2 ]
 }
 
 verify_show_argument_is_not_zero() {
   echo "$2" |egrep -v -q '^0+$'
-  local error=$?
-  [ $error -eq 0 ] || echo "error: show argument is zero." >&2
-  [ $error -eq 0 ]
+  local error_code=$?
+  [ $error_code -eq 0 ] || error 1 "show argument is zero."
+  [ $error_code -eq 0 ]
 }
 
 verify_show_argument_is_numeric() {
   echo "$2" |egrep -q '^-?[1-9][0-9]*$'
-  local error=$?
-  [ $error -eq 0 ] || echo "error: show argument not numeric." >&2
-  [ $error -eq 0 ]
+  local error_code=$?
+  [ $error_code -eq 0 ] || error 1 "show argument not numeric."
+  [ $error_code -eq 0 ]
 }
 
 verify_show_argument_is_within_bounds() {
   local n=$(echo "$2" |tr -d -)
   local line_count=$(depth)
-  [ $n -le $line_count ] || echo "error: show argument out of bounds." >&2
+  [ $n -le $line_count ] || error 1 "show argument out of bounds."
   [ $n -le $line_count ]
 }
 
@@ -138,7 +143,7 @@ push_stdin() {
   then
     cat "$temporary_file" >>"$DOT_FRAME"
   else
-    echo "error: empty text, push cancelled." >&2
+    error 1 "empty text, push cancelled."
   fi
   rm "$temporary_file"
 }
@@ -161,7 +166,7 @@ depth() {
 }
 
 verify_top_dotframe_is_not_a_directory() {
-  [ -d "$DOT_FRAME" ] && echo "error: $DOT_FRAME is a directory." >&2
+  [ -d "$DOT_FRAME" ] && error 1 "$DOT_FRAME is a directory."
   [ ! -d "$DOT_FRAME" ]
 }
 
@@ -169,7 +174,7 @@ verify_top_dotframe_exists() {
   [ ! -e "$DOT_FRAME" ] && touch "$DOT_FRAME"
   if [ ! -e "$DOT_FRAME" ];
   then
-    echo "error: failed to create $DOT_FRAME." >&2
+    error 1 "failed to create $DOT_FRAME."
     false
   fi
 }
@@ -181,7 +186,7 @@ verify_top_valid_dotframe() {
 
 verify_top_dotframe_is_not_empty() {
   local line_count=$(depth)
-  [ $line_count -lt 1 ] && echo "error: $DOT_FRAME is empty." >&2
+  [ $line_count -lt 1 ] && error 1 "$DOT_FRAME is empty."
   [ $line_count -gt 0 ]
 }
 
@@ -209,7 +214,7 @@ verify_depth() {
 }
 
 invalid_command() {
-  echo "error: invalid command. try \`${SCRIPT_BASENAME} help'." >&2
+  error 1 "invalid command. try \`${SCRIPT_BASENAME} help'."
   false
 }
 
