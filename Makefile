@@ -7,7 +7,7 @@ all:
 
 install:
 	mkdir -p ${bin_dir}
-	sed "s/^VERSION=.*/VERSION=\"$(shell git describe --dirty)\"/" bin/frame.bash >${bin_dir}/frame
+	sed "s/^VERSION=.*/VERSION=\"$(shell git describe --dirty)\"/" bin/frame >${bin_dir}/frame
 	chmod 755 ${bin_dir}/frame
 
 uninstall:
