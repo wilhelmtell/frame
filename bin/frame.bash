@@ -218,7 +218,7 @@ verify() {
   local cmds="top|pop|push|depth|version|help|trace|list|show"
   if egrep --quiet "^(${cmds})$" <<<"$1"
   then
-    verify_${1}
+    verify_${1} "$@"
   else
     invalid_command
   fi
